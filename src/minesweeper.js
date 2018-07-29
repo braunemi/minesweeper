@@ -1,18 +1,50 @@
-const board = [
-          [' ', ' ', ' '],
-          [' ', ' ', ' '],
-          [' ', ' ', ' ']
-];
+const generatePlayerBoard = (numberOfRows, numberOfColumns) => {
+  let board = [];
+  for(let i = 0; i < numberOfRows; i++) {
+    row = [];
+    for(let j = 0; j < numberOfColumns; j++) {
+      row.push(' ');
+    }
+    board.push(row);
+  }
+  return board;
+};
+
+
+const generateBombBoard = (numberOfRows, numberOfColumns, numberOfBombs) => {
+  let board = [];
+  for(let i = 0; i < numberOfRows; i++) {
+    row = [];
+    for(let j = 0; j < numberOfColumns; j++) {
+      row.push(null);
+    }
+    board.push(row);
+  }
+
+  // This piece of code has potential of adding Bombs where there is an already an existing bomb
+  let numberOfBombsPlaced = 0;
+  while (numberOfBombsPlaced < numberOfBombs) {
+    let randomRowIndex = Math.floor(Math.random() * numberOfRows);
+    let randomColumnIndex = Math.floor(Math.random() * numberOfColumns);
+    board[randomRowIndex][randomColumnIndex] = 'B';
+    numberOfBombsPlaced++;
+  }
+
+  return board;
+};
 
 const printBoard = (board) => {
-  console.log('Current Board:');
-  console.log(board[0].join(' | '));
-  console.log(board[1].join(' | '));
-  console.log(board[2].join(' | '));
-}
-printBoard(board);
+  let newBoard = board.map(function(row) {
+    return row.join(' | ');
+  }).join('\n');
 
-board[0][1] = '1';
-board[2][2] = 'B';
+  console.log(newBoard);
+};
 
-printBoard(board);
+let playerBoard = generatePlayerBoard(3,4);
+let bombBoard = generateBombBoard(3,4,5);
+
+console.log('Player Board: ');
+printBoard(playerBoard);
+console.log('Bomb Board: ');
+printBoard(bombBoard);
