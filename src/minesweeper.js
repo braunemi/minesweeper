@@ -26,11 +26,46 @@ const generateBombBoard = (numberOfRows, numberOfColumns, numberOfBombs) => {
   while (numberOfBombsPlaced < numberOfBombs) {
     let randomRowIndex = Math.floor(Math.random() * numberOfRows);
     let randomColumnIndex = Math.floor(Math.random() * numberOfColumns);
-    board[randomRowIndex][randomColumnIndex] = 'B';
-    numberOfBombsPlaced++;
+
+    let bombLocation = board[randomRowIndex][randomColumnIndex];
+    if(bombLocation !== 'B') {
+      board[randomRowIndex][randomColumnIndex] = 'B';
+      numberOfBombsPlaced++;
+    }
   }
 
   return board;
+};
+
+const getNumberOfNeighborBombs = (bombBoard, rowIndex, columnIndex) => {
+  neighborOffsets = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1]
+  ];
+  const numberOfRows = bombBoard.length;
+  const numberOfColumns = bombBoard[0].length;
+  let numberOfBombs = 0;
+
+  neighborOffsets.forEach(function(offset) {
+    const neighborRowIndex = rowIndex + offset[0];
+    const neighborColumenIndex = columenIndex + offset[1];
+    if(neighborRowIndex >= 0 && neighborRowIndex <= numberOfRows &&
+        neighborColumnIndex >= 0 && neighborColumnIndex <= numberOfColumns) {
+          if(bombBoard[neighborRowIndex][neighborColumnIndex] == 'B')
+            numberOfBombs++;
+        }
+  });
+  return numberOfBombs;
+};
+
+const flipTile = (playerBoard, bombBoard, rowIndex, columenIndex) => {
+
 };
 
 const printBoard = (board) => {
